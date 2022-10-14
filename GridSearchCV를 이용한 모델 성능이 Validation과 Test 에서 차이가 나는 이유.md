@@ -19,7 +19,9 @@ validation과 test 모두 모델에 누설되지 않은 데이터인데 왜 모�
 <br/> 
 사용한 것은 파장 별 흡광도로, 스펙트럼을 나타내는 데이터이다. 목표변수 Y는 특정한 정수값. (자세히 말할 수 없는 것에 심심한 사과를..)  
 <br/> 
-![spectrum](https://user-images.githubusercontent.com/111988648/195767602-2a710187-5d0d-4a1b-9beb-d48d927c59a7.png)
+
+![spectrum](https://user-images.githubusercontent.com/111988648/195767602-2a710187-5d0d-4a1b-9beb-d48d927c59a7.png)   
+
 (https://www.edinst.com/blog/what-are-absorption-excitation-and-emission-spectra/)  
 시각화를 한다면 이런 형태로 나올 것이다.
 <br/> 
@@ -27,7 +29,8 @@ validation과 test 모두 모델에 누설되지 않은 데이터인데 왜 모�
 ```python
 df.iloc[:, 0:58]
 ```
-![image](https://user-images.githubusercontent.com/111988648/195768081-908d9c8a-d267-4e44-9521-40a548eee4f3.png)
+
+![image](https://user-images.githubusercontent.com/111988648/195768081-908d9c8a-d267-4e44-9521-40a548eee4f3.png)  
 <br/> 
 저파장의 영역에선 모든 데이터의 값이 0을 띄는 희소한 데이터이며  
 특성이 1024개로 매우 많았고  
@@ -42,7 +45,8 @@ Scikit learn의 GridSearchCV 에는 Parameter 최적화와 더불어 Cross valid
 **Cross validation**이란  
 데이터셋을 여러 split(fold)로 나누어 학습에 사용하여 모델이 다양한 train set 을 경험할 수 있도록 하는 기법이다.   
 <br/> 
-![cv](https://user-images.githubusercontent.com/111988648/195750082-89008197-6c59-491a-b145-949bd1b74e9c.png)  
+
+![cv](https://user-images.githubusercontent.com/111988648/195750082-89008197-6c59-491a-b145-949bd1b74e9c.png)    
 CV기법에 따라 자세한 split 방식에는 차이가 있지만, 일반적으로는 이렇다고 한다.  
 <br/> 
 고정된 train set과 test set으로 학습과 평가를 하며 반복적으로 모델을 튜닝하다보면 모델이 과적합되어버리는 결과가 생긴다.  
@@ -140,8 +144,8 @@ score[['rank_test_score', 'params', 'mean_test_score',
 ![scoredataframe](https://user-images.githubusercontent.com/111988648/195765220-de422d8c-10bb-45a1-acbf-20352577eca7.png)
 <br/> 
 
-`n_split = 10`으로 설정했기 때문에, 각각의 hyper parameter 조합마다 10개의 split을 생성하고 평가하며 그 값들의 평균치로 전체적인 CV를 통한 성능을 도출할 것이다.  
-그런데, 내 CV의 결과를 보면, 같은 파라미터 조합임에도 몇 번째 split이냐에 따라 test score가 `-0.7 ~ 0.8` 값으로 너무너무 천차만별임을 확인할 수 있다.  
+`n_split = 10`으로 설정했기 때문에, 각각의 hyper parameter 조합마다 10개의 split을 생성하고 평가하며 그 값들의 평균치로 전체적인 CV를 통한 성능을 도출할 것이다.   
+그런데, 내 CV의 결과를 보면, 같은 파라미터 조합임에도 몇 번째 split이냐에 따라 test score가 `-0.7 ~ 0.8` 값으로 너무너무 천차만별임을 확인할 수 있다.   
 <br/> <br/> 
 그렇다.   
 각 split에 어떠한 데이터가 들어가느냐에 따라 val score가 영향을 받는 것이다.   
@@ -156,15 +160,15 @@ score[['rank_test_score', 'params', 'mean_test_score',
 ```
 <br/> <br/> 
 ## 정리!
-Q. GridSearchCV를 이용한 모델 성능이 Validation과 Test에서 차이가 나는 이유가 무엇인가요??
+Q. GridSearchCV를 이용한 모델 성능이 Validation과 Test에서 차이가 나는 이유가 무엇인가요??  
 A. 양이 적고 좋지 않은 Dataset에 CV의 성질이 적용되었기 때문입니다! 데이터를 더 많이 쌓아 데이터 간 적당한 규칙이 존재할 수 있도록 만들거나, 데이터를 잘 정제하는 과정을 거친다면 자연히 validation score 와 test score가 비슷해질 것이라 생각한다.  
 <br/> <br/> 
 ## 고찰
 어찌 보면 당연한 말이다. ...   
 데이터를 분배해서 검증하는 것을 통해 전체적으로 잘 일반화된 모델을 찾을 수 있도록 하는 것이 gridsearch 와 Cross validation의 본질이니까.  
-기존에 잘 알려진 Titanic, Boston Housing, Iris과 같은 질 좋은 Dataset을 사용하면 gridSearchCV는 물론 잘 돌아가고 test score까지 괜찮게 나왔고,
+기존에 잘 알려진 Titanic, Boston Housing, Iris과 같은 질 좋은 Dataset을 사용하면 gridSearchCV는 물론 잘 돌아가고 test score까지 괜찮게 나왔고,  
 그런 데이터에 익숙해진 탓에 CV의 기본 개념을 잊고 데이터만 보면 코드부터 일단 냅다 들이밀 게 된 것 같다.  
-실제 데이터는 그런 이상적인 형태가 아닌데...  ㅠㅠ
+실제 데이터는 그런 이상적인 형태가 아닌데...  ㅠㅠ  
 너무나 당연한 문제를 갖고 고민했던 게 조금은 부끄러우면서도 개념을 다시 정리할 수 있던 계기가 되어주어 감사하다.  
 
 
